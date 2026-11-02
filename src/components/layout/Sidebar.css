@@ -1,0 +1,109 @@
+.menu-lateral {
+  width: 220px;
+  flex-shrink: 0;
+  padding: 24px 14px;
+  background-color: #253443;
+  color: #ffffff;
+
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.menu-lateral__marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Desenha um símbolo com duas colunas, sem usar imagem. */
+.menu-lateral__marca::before {
+  content: "";
+  display: block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+
+  background:
+    linear-gradient(#ffffff, #ffffff)
+      6px 6px / 6px 16px no-repeat,
+    linear-gradient(#ffffff, #ffffff)
+      16px 6px / 6px 11px no-repeat,
+    #0c66e4;
+}
+
+.menu-lateral__navegacao {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-lateral__link {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 10px 14px;
+
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #dce5ef;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.menu-lateral__link:hover {
+  background-color: #34495e;
+  color: #ffffff;
+}
+
+.menu-lateral__link.active {
+  background-color: #0c66e4;
+  color: #ffffff;
+}
+
+.menu-lateral__link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .menu-lateral {
+    width: 100%;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .menu-lateral__marca {
+    padding: 0;
+    font-size: 18px;
+  }
+
+  .menu-lateral__navegacao {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .menu-lateral__link {
+    justify-content: center;
+    flex: 1;
+    min-height: 38px;
+    padding: 8px 12px;
+    background-color: #304253;
+  }
+
+  .menu-lateral__link.active {
+    background-color: #0c66e4;
+  }
+}
