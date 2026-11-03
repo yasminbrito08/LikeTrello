@@ -9,7 +9,11 @@ function MainLayout() {
       <Sidebar />
 
       <div className="layout__principal">
-        <Header />
+
+        <Header
+          titulo="Gerenciador de projetos"
+          usuario="Usuário"
+        />
 
         <main className="layout__conteudo">
           <Outlet />

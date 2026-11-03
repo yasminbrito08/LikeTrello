@@ -1,14 +1,23 @@
 import "./Header.css";
 
-function Header() {
+type HeaderProps = {
+    titulo: string;
+    usuario: string;
+};
+
+function Header(props: HeaderProps) {
     return (
         <header className="cabecalho">
             <span className="cabecalho__titulo">
-                Gerenciador de projetos
+                {props.titulo}
             </span>
 
             <span className="cabecalho__usuario">
-                Usuário
+                <span className="cabecalho__avatar" aria-hidden="true">
+                    {props.usuario.trim().charAt(0).toUpperCase()}
+                </span>
+
+                {props.usuario}
             </span>
         </header>
     );

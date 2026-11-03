@@ -25,8 +25,7 @@
   overflow-wrap: anywhere;
 }
 
-.cabecalho__usuario::before {
-  content: "U";
+.cabecalho__avatar {
   display: flex;
   align-items: center;
   justify-content: center;
