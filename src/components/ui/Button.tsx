@@ -1,5 +1,5 @@
 import "./Button.css";
-
+// opçoes recebidas pelo botão
 type ButtonProps = {
     texto: string;
 
@@ -10,6 +10,7 @@ type ButtonProps = {
 };
 
 function Button(props: ButtonProps) {
+    // se o tipo nao for informado, usa um botao comum.
     return (
         <button
             type={props.tipo ?? "button"}
