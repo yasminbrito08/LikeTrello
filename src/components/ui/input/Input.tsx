@@ -1,5 +1,4 @@
 import type { ChangeEvent } from "react";
-import "./Input.css";
 
 type InputProps = {
     id: string;
@@ -14,10 +13,11 @@ type InputProps = {
 
 function Input(props: InputProps) {
     return (
-
-        <div className="campo">
-
-            <label className="campo__rotulo" htmlFor={props.id}>
+        <div className="flex flex-col gap-1.5 w-full text-left">
+            <label
+                className="text-sm font-semibold text-secondary"
+                htmlFor={props.id}
+            >
                 {props.rotulo}
             </label>
 
@@ -30,11 +30,10 @@ function Input(props: InputProps) {
                 disabled={props.desabilitado}
                 aria-invalid={Boolean(props.erro)}
                 aria-describedby={props.erro ? `${props.id}-erro` : undefined}
-                className="campo__input"
+                className="box-border w-full min-w-0 px-3 py-2.5 border border-slate-300 rounded-md bg-foreground text-secondary font-[inherit] text-sm focus:border-primary focus:outline-2 focus:outline-primary focus:outline-offset-2 aria-invalid:border-danger disabled:bg-slate-100 disabled:text-background-color disabled:cursor-not-allowed"
             />
             {props.erro && (
-                <span className="campo__erro" id={`${props.id}-erro`}>
-
+                <span className="text-danger text-xs" id={`${props.id}-erro`}>
                     {props.erro}
                 </span>
             )}

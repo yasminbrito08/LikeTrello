@@ -1,8 +1,9 @@
 import { useState } from "react";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
+import Input from "../components/ui/input/Input";
+import Button from "../components/ui/button/Button";
 import type { FormEvent } from "react";
 import { useUserStore } from "../contexts/AuthContext";
+import logo from "../assets/logo.png";
 
 
 function Register() {
@@ -75,9 +76,18 @@ function Register() {
 
    return (
      <div>
-        <h1>Cadastro</h1>
-
-         <form onSubmit={processarCadastro} noValidate>
+        <div className="flex flex-col items-center justify-center mt-10 mb-8">
+          <img src={logo} alt="logo do sistema" width={250} />
+          <div className="flex flex-col items-center justify-center">
+            <h1 className="font-bold mb-0">Criar Conta</h1>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center">
+          <form 
+            onSubmit={processarCadastro} 
+            noValidate 
+            className="flex flex-col space-y-5 w-full max-w-80 px-4 sm:max-w-100"
+          >
            <Input
               id="nome"
               rotulo="Nome"
@@ -89,7 +99,7 @@ function Register() {
             <Input
              id="email"
               rotulo="Email"
-            tipo="email"
+              tipo="email"
               valor={email}
               aoAlterar={(evento) => setEmail(evento.target.value)}
              erro={erroEmail}
@@ -102,7 +112,7 @@ function Register() {
               valor={senha}
               aoAlterar={(evento) => setSenha(evento.target.value)}
              erro={erroSenha}
-           />
+            />
 
            <Input
               id="confirmar-senha"
@@ -115,7 +125,11 @@ function Register() {
 
             <Button texto="Cadastrar" tipo="submit" />
          </form>
-     </div>
+      </div>
+         <div className="flex flex-col items-center justify-center mt-6 space-y-2 mb-10">
+            <p>Já tem uma conta? <a href="/login" className="underline text-primary">Entrar</a></p>
+         </div>
+    </div>
     );
   }
 export default Register;
