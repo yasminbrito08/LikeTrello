@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import "./Input.css";
-
+// opçoes recebidas pelo campo
 type InputProps = {
     id: string;
     rotulo: string;
@@ -16,7 +16,7 @@ function Input(props: InputProps) {
     return (
 
         <div className="campo">
-
+            {/*liga o rotulo ao campo pelo id*/}
             <label className="campo__rotulo" htmlFor={props.id}>
                 {props.rotulo}
             </label>
@@ -32,6 +32,7 @@ function Input(props: InputProps) {
                 aria-describedby={props.erro ? `${props.id}-erro` : undefined}
                 className="campo__input"
             />
+            {/*mostra a mensagem de erro quando ela e recebida*/}
             {props.erro && (
                 <span className="campo__erro" id={`${props.id}-erro`}>
 

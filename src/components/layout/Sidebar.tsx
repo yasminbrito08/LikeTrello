@@ -8,7 +8,7 @@ function Sidebar() {
       <span className="menu-lateral__marca">
         LikeTrello
       </span>
-
+        {/*links de navegaçao com destaque para a pagina atual*/}
       <nav
         className="menu-lateral__navegacao"
         aria-label="Menu principal"
