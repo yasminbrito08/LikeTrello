@@ -1,13 +1,19 @@
 import "./Sidebar.css";
+import logo from "../../assets/logo.png";
 
 import { NavLink } from "react-router";
 
 function Sidebar() {
   return (
     <aside className="menu-lateral">
-      <span className="menu-lateral__marca">
-        LikeTrello
-      </span>
+      <div className="menu-lateral__marca">
+        <img
+          src={logo}
+          alt="Logo LikeTrello"
+          className="menu-lateral__logo"
+        />
+        <span>LikeTrello</span>
+      </div>
 
       <nav
         className="menu-lateral__navegacao"

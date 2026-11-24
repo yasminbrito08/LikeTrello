@@ -21,21 +21,12 @@
   letter-spacing: -0.5px;
 }
 
-/* Desenha um símbolo com duas colunas, sem usar imagem. */
-.menu-lateral__marca::before {
-  content: "";
-  display: block;
+/* Define o tamanho da logo do LikeTrello */
+.menu-lateral__logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-
-  background:
-    linear-gradient(#ffffff, #ffffff)
-      6px 6px / 6px 16px no-repeat,
-    linear-gradient(#ffffff, #ffffff)
-      16px 6px / 6px 11px no-repeat,
-    #0c66e4;
 }
 
 .menu-lateral__navegacao {
