@@ -1,0 +1,118 @@
+.projetos {
+  width: 100%;
+}
+
+.projetos__cabecalho {
+  margin-bottom: 24px;
+}
+
+.projetos__cabecalho h1 {
+  font-size: 28px;
+  color: #172b4d;
+  margin-bottom: 8px;
+}
+
+.projetos__cabecalho p {
+  font-size: 15px;
+  color: #5e6c84;
+}
+
+.projetos__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.projetos__card {
+  background-color: #ffffff;
+  border: 1px solid #dfe1e6;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.projetos__card h2 {
+  font-size: 18px;
+  color: #172b4d;
+  margin-bottom: 10px;
+}
+
+.projetos__card p {
+  font-size: 14px;
+  color: #5e6c84;
+  line-height: 1.5;
+}
+
+.projetos__filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.projetos__filtros button {
+  padding: 10px 16px;
+  border: 1px solid #dfe1e6;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #172b4d;
+  cursor: pointer;
+}
+
+.projetos__filtros button:hover {
+  background-color: #e9f2ff;
+}
+
+.projetos__filtros button.filtro-ativo {
+  background-color: #0c66e4;
+  color: #ffffff;
+  border-color: #0c66e4;
+}
+
+.projetos__botao-arquivar,
+.projetos__botao-restaurar {
+  margin-top: 16px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.projetos__botao-arquivar {
+  background-color: #fff1f0;
+  color: #c9372c;
+  border: 1px solid #f5b7b1;
+}
+
+.projetos__botao-arquivar:hover {
+  background-color: #ffe2df;
+}
+
+.projetos__botao-restaurar {
+  background-color: #e9f2ff;
+  color: #0c66e4;
+  border: 1px solid #b3d4ff;
+}
+
+.projetos__botao-restaurar:hover {
+  background-color: #d4e7ff;
+}
+
+.projetos__mensagem {
+  background-color: #e3fcef;
+  color: #216e4e;
+  border: 1px solid #abf5d1;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.projetos__vazio {
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px dashed #dfe1e6;
+  border-radius: 8px;
+  color: #5e6c84;
+  text-align: center;
+  margin-bottom: 20px;
+}

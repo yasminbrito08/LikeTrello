@@ -3,6 +3,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import MainLayout from "../components/layout/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
+import Projects from "../pages/Projects";
 
 function AppRoutes() {
   return (
@@ -16,7 +17,7 @@ function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<h1>Dashboard</h1>} />
-          <Route path="/projects" element={<h1>Projetos</h1>} />
+          <Route path="/projects" element={<Projects />} />
           <Route path="/profile" element={<h1>Perfil</h1>} />
         </Route>
       </Route>
