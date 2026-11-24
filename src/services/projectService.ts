@@ -35,16 +35,57 @@ export function getProjects(): Project[] {
 export function archiveProject(id: number): void {
   const project = projects.find((project) => project.id === id);
 
-  if (project) {
-    project.archived = true;
+  if (!project) {
+    throw new Error("Projeto não encontrado.");
   }
+    
+    project.archived = true;
+
 }
 
 // Restaura um projeto arquivado.
 export function restoreProject(id: number): void {
   const project = projects.find((project) => project.id === id);
 
-  if (project) {
-    project.archived = false;
+  if (!project) {
+    throw new Error("Projeto não encontrado.");
   }
+    
+  project.archived = false;
+
+}
+
+//Criar um novo projeto
+export function createProject(
+  name: string,
+  description?: string
+ ): Project {
+    const newProject: Project = {
+      id: Math.max(0, ...projects.map((project) => project.id)) + 1,
+      name,
+      description,
+      taskCount: 0,
+      archived: false,
+    };
+
+    projects.push(newProject);
+
+    return newProject;
+ }
+
+//Atualizar projeto existente
+export function updateProject(
+  id: number,
+  name: string,
+  description?: string
+): Project {
+  const project = projects.find((project) => project.id === id);
+
+  if (!project) {
+    throw new Error("Projeto não encontrado.");
+ }
+  project.name = name;
+  project.description = description;
+
+  return project;
 }

@@ -4,6 +4,12 @@
 
 .projetos__cabecalho {
   margin-bottom: 24px;
+  margin-right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .projetos__cabecalho h1 {
@@ -77,6 +83,23 @@
   cursor: pointer;
 }
 
+.projetos__botao-editar {
+  margin-top: 16px;
+  margin-right: 10px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: #e9f2ff;
+  color: #0c66e4;
+  border: 1px solid #b3d4ff;
+}
+
+.projetos__botao-editar:hover {
+  background-color: #d4e7ff;
+}
+
 .projetos__botao-arquivar {
   background-color: #fff1f0;
   color: #c9372c;
@@ -115,4 +138,58 @@
   color: #5e6c84;
   text-align: center;
   margin-bottom: 20px;
+}
+
+.projetos__formulario {
+  background-color: #ffffff;
+  border: 1px solid #dfe1e6;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 500px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.projetos__formulario h2{
+  font-size: 20px;
+  color: #172b4d;
+  margin-bottom: 16px;
+}
+
+.projetos__formulario-acoes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.projetos__formulario-acoes button {
+  width: auto;
+}
+
+.projetos__erro {
+  background-color: #fff1f0;
+  color: #c9372c;
+  border: 1px solid #f5b7b1;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.projetos__carregando {
+  background-color: #e9f2ff;
+  color: #0c66e4;
+  border: 1px solid #b3d4ff;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.projetos__mensagem,
+.projetos__erro,
+.projetos__carregando {
+  width: fit-content;
 }
