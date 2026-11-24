@@ -1,66 +1,36 @@
 import { useState } from "react";
 import "./Projects.css";
 
-type Projeto = {
-    id: number;
-    nome: string;
-    descricao: string;
-    arquivado: boolean;
-};
-
-const projetosIniciais: Projeto[] = [
-    {
-        id: 1,
-        nome: "Projeto Integrador",
-        descricao: "Desenvolvimento do sistema acadêmico.",
-        arquivado: false,
-    },
-    {
-        id: 2,
-        nome: "Site Institucional",
-        descricao: "Criação de um site para uma empresa.",
-        arquivado: false,
-    },
-    {
-        id: 3,
-        nome: "Aplicativo de Tarefas",
-        descricao: "Sistema para organizar atividades.",
-        arquivado: true,
-    },
-];
+import type { Project } from "../types/project";
+import {
+    getProjects,
+    archiveProject,
+    restoreProject,
+} from "../services/projectService";
 
 function Projects() {
     const [mostrarArquivados, setMostrarArquivados] = useState(false);
 
-    const [projetos, setProjetos] = useState<Projeto[]>(projetosIniciais);
+    const [projetos, setProjetos] = useState<Project[]>(() => getProjects());
 
     const [mensagem, setMensagem] = useState("");
 
+    // Filtra os projetos ativos ou arquivados.
     const projetosFiltrados = projetos.filter(
-        (projeto) => projeto.arquivado === mostrarArquivados
+        (projeto) => projeto.archived === mostrarArquivados
     );
 
+    // Arquiva um projeto e atualiza a lista exibida.
     function arquivarProjeto(id: number) {
-        setProjetos((listaAtual) =>
-            listaAtual.map((projeto) =>
-                projeto.id === id
-                    ? { ...projeto, arquivado: true }
-                    : projeto
-            )
-        );
-
+        archiveProject(id);
+        setProjetos([...getProjects()]);
         setMensagem("Projeto arquivado com sucesso!");
     }
 
+    // Restaura um projeto e atualiza a lista exibida.
     function restaurarProjeto(id: number) {
-        setProjetos((listaAtual) =>
-            listaAtual.map((projeto) =>
-                projeto.id === id
-                    ? { ...projeto, arquivado: false }
-                    : projeto
-            )
-        );
-
+        restoreProject(id);
+        setProjetos([...getProjects()]);
         setMensagem("Projeto restaurado com sucesso!");
     }
 
@@ -106,10 +76,10 @@ function Projects() {
             <div className="projetos__lista">
                 {projetosFiltrados.map((projeto) => (
                     <div className="projetos__card" key={projeto.id}>
-                        <h2>{projeto.nome}</h2>
-                        <p>{projeto.descricao}</p>
+                        <h2>{projeto.name}</h2>
+                        <p>{projeto.description ?? "Sem descrição."}</p>
 
-                        {projeto.arquivado ? (
+                        {projeto.archived ? (
                             <button
                                 type="button"
                                 className="projetos__botao-restaurar"
