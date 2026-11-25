@@ -1,7 +1,7 @@
 import "./Header.css";
 
 type HeaderProps = {
-    titulo: string;
+    titulo?: string;
     usuario: string;
 };
 

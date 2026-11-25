@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Input from "../components/ui/input/Input";
-import Button from "../components/ui/button/Button";
+import Input from "../../components/ui/input/Input";
+import Button from "../../components/ui/button/Button";
 import type { FormEvent } from "react";
-import { useUserStore } from "../contexts/AuthContext";
-import logo from "../assets/logo.png";
+import { useUserStore } from "../../contexts/AuthContext";
+import logo from "../../assets/logo.png";
+import { useNavigate } from "react-router";
 
 
 function Register() {
@@ -18,6 +19,7 @@ function Register() {
   const [erroConfirmarSenha, setErroConfirmarSenha] = useState("");
 
   const registerUser = useUserStore((state) => state.registerUser);
+  const navigate = useNavigate();
 
   async function processarCadastro(evento: FormEvent<HTMLFormElement>) {
   evento.preventDefault();
@@ -67,7 +69,9 @@ function Register() {
       try {
         const resposta = await registerUser(dadosCadastro);
 
-        console.log("Cadastro realizado com sucesso", resposta.userId);
+        console.log("Cadastro realizado com sucesso");
+        navigate("/login");
+
       } catch (error) {
         console.error("Erro ao cadastrar usuário:", error);
       }

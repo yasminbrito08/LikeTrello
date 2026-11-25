@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Input from "../components/ui/input/Input.tsx";
-import Button from "../components/ui/button/Button.tsx";
+import Input from "../../components/ui/input/Input.tsx";
+import Button from "../../components/ui/button/Button.tsx";
 import type { SubmitEvent } from "react";
-import { useUserStore } from "../contexts/AuthContext";
-import logo from "../assets/logo.png";
+import { useUserStore } from "../../contexts/AuthContext.ts";
+import logo from "../../assets/logo.png";
+import { useNavigate } from "react-router";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ function Login() {
   const [erroSenha, setErroSenha] = useState("");
 
   const login = useUserStore((state) => state.login);
+  const navigate = useNavigate();
 
   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -40,9 +42,10 @@ function Login() {
 
     try {
       await login({
-        login: email,
+        email: email,
         password: senha
       });
+      navigate("/dashboard");
     } catch (error) {
       console.error("Erro ao realizar login:", error);
         }

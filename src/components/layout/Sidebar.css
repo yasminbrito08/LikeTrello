@@ -68,6 +68,40 @@
   outline-offset: 2px;
 }
 
+.menu-lateral__sair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+  min-height: 42px;
+  padding: 10px 14px;
+
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #dce5ef;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.menu-lateral__sair:hover {
+  background-color: #34495e;
+  color: #ffffff;
+}
+
+.menu-lateral__sair:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
 @media (max-width: 600px) {
   .menu-lateral {
     width: 100%;
@@ -96,5 +130,13 @@
 
   .menu-lateral__link.active {
     background-color: #0c66e4;
+  }
+
+  .menu-lateral__sair {
+    margin-top: 0;
+    flex: 1;
+    min-height: 38px;
+    padding: 8px 12px;
+    background-color: #304253;
   }
 }

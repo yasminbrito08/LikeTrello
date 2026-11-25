@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./Projects.css";
 
-import type { Project } from "../types/project";
-import { useProjects } from "../hooks/useProjects";
+import type { Project } from "../../types/project";
+import { useProjects } from "../../hooks/useProjects";
 
-import Input from "../components/ui/input/Input";
-import Button from "../components/ui/button/Button";
+import Input from "../../components/ui/input/Input";
+import Button from "../../components/ui/button/Button";
 
 function Projects() {
   const [mostrarArquivados, setMostrarArquivados] = useState(false);
@@ -69,7 +69,7 @@ function Projects() {
     <div className="projetos">
       <div className="projetos__cabecalho">
         <div>
-          <h1>Meus Projetos</h1>
+          <h1 className="font-bold">Meus Projetos</h1>
           <p>Visualize e gerencie seus projetos.</p>
         </div>
 

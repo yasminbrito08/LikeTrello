@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useProjects } from "../hooks/useProjects";
-import Button from "../components/ui/button/Button";
-import Input from "../components/ui/input/Input";
+import { useProjects } from "../../hooks/useProjects";
+import Button from "../../components/ui/button/Button";
+import Input from "../../components/ui/input/Input";
 import "./Dashboard.css";
 
 function Dashboard() {
@@ -21,7 +21,7 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <div className="dashboard__boas-vindas">
-        <h1>Bem-vindo ao LikeTrello!</h1>
+        <h1 className="font-bold">Bem-vindo ao LikeTrello!</h1>
         <p>Organize seus projetos e acompanhe suas tarefas.</p>
       </div>
 

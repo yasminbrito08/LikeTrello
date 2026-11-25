@@ -1,4 +1,5 @@
-import axios, { type AxiosInstance, type AxiosResponse } from "axios";
+import axios, { type AxiosInstance } from "axios";
+import type { LoginResponse } from "../user/user.model";
 
 export class _AuthService {
     axios: AxiosInstance;
@@ -8,15 +9,15 @@ export class _AuthService {
             baseURL: "http://localhost:8080/api/v1/"
         })
     }
-    async login(login: string, password: string): Promise<AxiosResponse>{
+    async login(email: string, password: string): Promise<LoginResponse>{
         return this.axios.request({
             method: "POST",
-            url: "", //precisa implementar no back
+            url: "auth/login",
             headers: {
                 "Content-Type": "application/json"
             },
             data: {
-                login,
+                email,
                 password,
             },
             withCredentials: true

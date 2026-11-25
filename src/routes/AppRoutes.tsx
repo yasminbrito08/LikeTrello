@@ -1,11 +1,12 @@
 
 import { Routes, Route, Navigate } from "react-router";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../pages/login/Login";
+import Register from "../pages/register/Register";
 import MainLayout from "../components/layout/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
-import Projects from "../pages/Projects";
-import Dashboard from "../pages/Dashboard";
+import Projects from "../pages/projects/Projects";
+import Dashboard from "../pages/dashboard/Dashboard";
+import Profile from "../pages/profile/Profile";
 
 function AppRoutes() {
   return (
@@ -20,7 +21,7 @@ function AppRoutes() {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/profile" element={<h1>Perfil</h1>} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>
 

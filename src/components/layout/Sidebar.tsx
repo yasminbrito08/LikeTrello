@@ -1,7 +1,8 @@
 import "./Sidebar.css";
 import logo from "../../assets/logo.png";
-
 import { NavLink } from "react-router";
+import Icon from "../ui/icon/icon";
+import logoutIcon from "../../Icons/logout";
 
 function Sidebar() {
   return (
@@ -31,6 +32,10 @@ function Sidebar() {
           Perfil
         </NavLink>
       </nav>
+      <button type="button" className="menu-lateral__sair">
+        <Icon path={logoutIcon} size={16} />
+        Sair
+      </button>
     </aside>
   );
 }

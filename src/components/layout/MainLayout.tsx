@@ -2,8 +2,10 @@ import "./MainLayout.css";
 import { Outlet } from "react-router";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import { useUserStore } from "../../contexts/AuthContext";
 
 function MainLayout() {
+  const userName = useUserStore((s) => s.user?.username) ?? "Usuário";
   return (
     <div className="layout">
       <Sidebar />
@@ -11,8 +13,7 @@ function MainLayout() {
       <div className="layout__principal">
 
         <Header
-          titulo="Gerenciador de projetos"
-          usuario="Usuário"
+          usuario={userName}
         />
 
         <main className="layout__conteudo">
