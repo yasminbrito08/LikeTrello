@@ -3,8 +3,13 @@ import { useProjects } from "../../hooks/useProjects";
 import Button from "../../components/ui/button/Button";
 import Input from "../../components/ui/input/Input";
 import "./Dashboard.css";
+import { useNavigate } from "react-router";
 
 function Dashboard() {
+
+  // Permite que o usuário navegue para outras rotas da aplicação.
+  const navigate = useNavigate();
+
   // Obtém os projetos e os estados de carregamento e erro pelo hook.
   const { projects, loading, error } = useProjects();
 
@@ -35,9 +40,10 @@ function Dashboard() {
           />
         </div>
 
+        {/* Redireciona o usuário para tela de projetos quando clicar no botão. */}
         <Button
           texto="Novo Projeto"
-          aoClicar={() => alert("Funcionalidade de criação de projeto")}
+          aoClicar={() => navigate("/projects")}
         />
       </div>
 

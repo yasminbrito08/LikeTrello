@@ -34,8 +34,8 @@ function Projects() {
     (projeto) => projeto.archived === mostrarArquivados,
   );
 
-  // Valida os dados do formulario e cria um novo projeto.
-  function handleSubmitProject(event: React.FormEvent<HTMLFormElement>) {
+  // Valida os dados do formulário e cria ou atualiza um projeto.
+  async function handleSubmitProject(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!nome.trim()) {
@@ -44,8 +44,8 @@ function Projects() {
     }
 
     const success = editarProjeto
-      ? atualizarProjeto(editarProjeto.id, nome.trim(), descricao.trim())
-      : criarProjeto(nome.trim(), descricao.trim());
+      ? await atualizarProjeto(editarProjeto.id, nome.trim(), descricao.trim())
+      : await criarProjeto(nome.trim(), descricao.trim());
 
     if (success) {
       setNome("");
@@ -57,6 +57,7 @@ function Projects() {
     }
   }
 
+  // Preenche o formulário com os dados do projeto que será editado.
   function handleUpdateProject(project: Project): void {
     setEditarProjeto(project);
     setNome(project.name);
@@ -153,6 +154,7 @@ function Projects() {
           Carregando projetos...
         </p>
       )}
+
       <div className="projetos__filtros">
         <button
           type="button"

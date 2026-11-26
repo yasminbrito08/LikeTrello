@@ -1,91 +1,59 @@
-
 import type { Project } from "../types/project";
+import { httpService } from "./httpService";
 
-// Dados simulados enquanto não há integração com o backend.
-const projects: Project[] = [
-  {
-    id: 1,
-    name: "Projeto Integrador",
-    taskCount: 8,
-    description: "Desenvolvimento do sistema acadêmico.",
-    archived: false,
-  },
-  {
-    id: 2,
-    name: "LikeTrello",
-    taskCount: 12,
-    description: "Sistema de gerenciamento de projetos.",
-    archived: false,
-  },
-  {
-    id: 3,
-    name: "Aplicativo de Tarefas",
-    taskCount: 5,
-    description: "Sistema para organizar atividades.",
-    archived: true,
-  },
-];
+class ProjectService extends httpService {
 
-// Retorna os projetos simulados.
-export function getProjects(): Project[] {
-  return projects;
-}
+  // Busca os projetos ativos
+  async getProjects(): Promise<Project[]> {
+    const response = await this.axios.get("/projects");
 
-// Arquiva um projeto.
-export function archiveProject(id: number): void {
-  const project = projects.find((project) => project.id === id);
-
-  if (!project) {
-    throw new Error("Projeto não encontrado.");
-  }
-    
-    project.archived = true;
-
-}
-
-// Restaura um projeto arquivado.
-export function restoreProject(id: number): void {
-  const project = projects.find((project) => project.id === id);
-
-  if (!project) {
-    throw new Error("Projeto não encontrado.");
-  }
-    
-  project.archived = false;
-
-}
-
-//Criar um novo projeto
-export function createProject(
-  name: string,
-  description?: string
- ): Project {
-    const newProject: Project = {
-      id: Math.max(0, ...projects.map((project) => project.id)) + 1,
-      name,
-      description,
+    return response.data.map((project: any) => ({
+      id: project.id,
+      name: project.name,
       taskCount: 0,
       archived: false,
-    };
+    }));
+  }
 
-    projects.push(newProject);
+  // Busca os projetos arquivados
+  async getArchivedProjects(): Promise<Project[]> {
+    const response = await this.axios.get("/projects/archived");
 
-    return newProject;
- }
+    return response.data.map((project: any) => ({
+      id: project.id,
+      name: project.name,
+      taskCount: 0,
+      archived: true,
+    }));
+  }
 
-//Atualizar projeto existente
-export function updateProject(
-  id: number,
-  name: string,
-  description?: string
-): Project {
-  const project = projects.find((project) => project.id === id);
+  // Cria um projeto enviando apenas o nome
+  async createProject(name: string): Promise<void> {
+    await this.axios.post("/projects", { name });
+  }
 
-  if (!project) {
-    throw new Error("Projeto não encontrado.");
- }
-  project.name = name;
-  project.description = description;
+  // Atualiza o nome de um projeto
+  async updateProject(id: string, name: string): Promise<void> {
+    await this.axios.put(`/projects/${id}`, { name });
+  }
 
-  return project;
+  // Arquiva um projeto
+  async archiveProject(id: string): Promise<void> {
+    await this.axios.patch(`/projects/${id}/archive`);
+  }
+
+  // Restaura um projeto arquivado
+  async restoreProject(id: string): Promise<void> {
+    await this.axios.patch(`/projects/${id}/restore`);
+  }
 }
+
+// Instancia o serviço para utilizar as operações
+const projectService = new ProjectService();
+
+export const getProjects = () => projectService.getProjects();
+export const getArchivedProjects = () => projectService.getArchivedProjects();
+export const createProject = (name: string) => projectService.createProject(name);
+export const updateProject = (id: string, name: string) => projectService.updateProject(id, name);
+export const archiveProject = (id: string) => projectService.archiveProject(id);
+export const restoreProject = (id: string) => projectService.restoreProject(id);

@@ -67,7 +67,8 @@ function Register() {
       };
 
       try {
-        const resposta = await registerUser(dadosCadastro);
+        {/* const resposta = */}
+        await registerUser(dadosCadastro);
 
         console.log("Cadastro realizado com sucesso");
         navigate("/login");

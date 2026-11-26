@@ -1,42 +1,58 @@
 import { useEffect, useState } from "react";
 import type { Project } from "../types/project";
-import { getProjects, createProject, updateProject, archiveProject, restoreProject } from "../services/projectService";
+import {
+  getProjects,
+  getArchivedProjects,
+  createProject,
+  updateProject,
+  archiveProject,
+  restoreProject,
+} from "../services/projectService";
 
 export function useProjects() {
   // Guarda a lista de projetos que vai ser exibida na tela.
   const [projects, setProjects] = useState<Project[]>([]);
 
-  // Indica se os projetos que ainda estão sendo carregados.
+  // Indica se os projetos ainda estão sendo carregados.
   const [loading, setLoading] = useState(true);
 
-  // Guarda uma mensagem caso ocorra um erro quando conseguir obter os projetos.
+  // Guarda uma mensagem caso ocorra um erro.
   const [error, setError] = useState("");
 
   // Guarda uma mensagem quando uma operação é realizada com sucesso.
   const [success, setSuccess] = useState("");
 
+  // Busca os projetos ativos e arquivados.
+  async function loadProjects() {
+    const ativos = await getProjects();
+    const arquivados = await getArchivedProjects();
+    setProjects([...ativos, ...arquivados]);
+  }
+
   // Executa a obtenção dos projetos quando o componente é carregado.
   useEffect(() => {
-    try {
-      const data = getProjects();
-      setProjects(data);
-    } catch {
-      setError("Não foi possível carregar os projetos.");
-    } finally {
-      // Encerra o estado de carregamento, com ou sem erro.
-      setLoading(false);
+    async function carregarProjetos() {
+      try {
+        await loadProjects();
+      } catch {
+        setError("Não foi possível carregar os projetos.");
+      } finally {
+        setLoading(false);
+      }
     }
+
+    carregarProjetos();
   }, []);
 
   // Cria um projeto e atualiza a lista de projetos.
-  function handleCreateProject(name: string, description?: string,): boolean {
+  async function handleCreateProject(name: string, _description?: string): Promise<boolean> {
     setLoading(true);
     setError("");
     setSuccess("");
 
     try {
-      createProject(name, description);
-      setProjects([...getProjects()]);
+      await createProject(name);
+      await loadProjects();
       setSuccess("Projeto criado com sucesso!");
       return true;
     } catch {
@@ -48,14 +64,14 @@ export function useProjects() {
   }
 
   // Atualiza um projeto e atualiza a lista de projetos.
-  function handleUpdateProject(id: number, name: string, description?: string): boolean {
+  async function handleUpdateProject(id: string, name: string, _description?: string): Promise<boolean> {
     setLoading(true);
     setError("");
     setSuccess("");
-    
-    try { 
-      updateProject(id, name, description);
-      setProjects([...getProjects()]);
+
+    try {
+      await updateProject(id, name);
+      await loadProjects();
       setSuccess("Projeto atualizado com sucesso!");
       return true;
     } catch {
@@ -67,14 +83,14 @@ export function useProjects() {
   }
 
   // Arquiva um projeto e atualiza a lista de projetos.
-  function handleArchiveProject(id: number): void {
+  async function handleArchiveProject(id: string): Promise<void> {
     setLoading(true);
     setError("");
     setSuccess("");
-  
+
     try {
-      archiveProject(id);
-      setProjects([...getProjects()]);
+      await archiveProject(id);
+      await loadProjects();
       setSuccess("Projeto arquivado com sucesso!");
     } catch {
       setError("Não foi possível arquivar o projeto.");
@@ -84,14 +100,14 @@ export function useProjects() {
   }
 
   // Restaura um projeto arquivado e atualiza a lista de projetos.
-  function handleRestoreProject(id: number): void {
+  async function handleRestoreProject(id: string): Promise<void> {
     setLoading(true);
     setError("");
     setSuccess("");
-  
+
     try {
-      restoreProject(id);
-      setProjects([...getProjects()]);
+      await restoreProject(id);
+      await loadProjects();
       setSuccess("Projeto restaurado com sucesso!");
     } catch {
       setError("Não foi possível restaurar o projeto.");
@@ -99,7 +115,16 @@ export function useProjects() {
       setLoading(false);
     }
   }
-  
+
   // Entrega os dados e estados para a página que utiliza o hook.
-  return { projects, loading, error, success, handleCreateProject, handleUpdateProject, handleArchiveProject, handleRestoreProject };
+  return {
+    projects,
+    loading,
+    error,
+    success,
+    handleCreateProject,
+    handleUpdateProject,
+    handleArchiveProject,
+    handleRestoreProject,
+  };
 }
