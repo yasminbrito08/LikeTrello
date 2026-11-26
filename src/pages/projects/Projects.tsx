@@ -25,7 +25,6 @@ function Projects() {
 
   const [abaAtiva, setAbaAtiva] = useState<AbaProjeto>("visao-geral");
   const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
   const [errorNome, setErrorNome] = useState("");
 
   const projeto = projetos.find((item) => item.id === projectId);
@@ -33,7 +32,6 @@ function Projects() {
   useEffect(() => {
     if (!projeto) return;
     setNome(projeto.name);
-    setDescricao(projeto.description ?? "");
     setErrorNome("");
   }, [projeto]);
 
@@ -53,7 +51,6 @@ function Projects() {
     const success = await atualizarProjeto(
       projeto.id,
       nome.trim(),
-      descricao.trim(),
     );
 
     if (success) {
@@ -207,18 +204,6 @@ function Projects() {
                     }}
                     erro={errorNome}
                   />
-
-                  <div className="projetos__campo-descricao">
-                    <label htmlFor="descricaoProjeto">Descrição</label>
-                    <textarea
-                      id="descricaoProjeto"
-                      value={descricao}
-                      onChange={(event) => setDescricao(event.target.value)}
-                      rows={4}
-                      placeholder="Descreva o projeto..."
-                    />
-                  </div>
-
                   <Button
                     texto="Salvar alterações"
                     tipo="submit"

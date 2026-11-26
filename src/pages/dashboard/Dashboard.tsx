@@ -45,7 +45,6 @@ function Dashboard() {
   const [modalAberto, setModalAberto] = useState(false);
   const [editarProjeto, setEditarProjeto] = useState<Project | null>(null);
   const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
   const [errorNome, setErrorNome] = useState("");
   const [popoverAbertoId, setPopoverAbertoId] = useState<string | null>(null);
 
@@ -77,7 +76,6 @@ function Dashboard() {
   function abrirModalCriacao() {
     setEditarProjeto(null);
     setNome("");
-    setDescricao("");
     setErrorNome("");
     setPopoverAbertoId(null);
     setModalAberto(true);
@@ -87,7 +85,6 @@ function Dashboard() {
   function abrirModalEdicao(project: Project) {
     setEditarProjeto(project);
     setNome(project.name);
-    setDescricao(project.description ?? "");
     setErrorNome("");
     setPopoverAbertoId(null);
     setModalAberto(true);
@@ -97,7 +94,6 @@ function Dashboard() {
     setModalAberto(false);
     setEditarProjeto(null);
     setNome("");
-    setDescricao("");
     setErrorNome("");
   }
 
@@ -111,8 +107,8 @@ function Dashboard() {
     }
 
     const success = editarProjeto
-      ? await atualizarProjeto(editarProjeto.id, nome.trim(), descricao.trim())
-      : await criarProjeto(nome.trim(), descricao.trim());
+      ? await atualizarProjeto(editarProjeto.id, nome.trim())
+      : await criarProjeto(nome.trim());
 
     if (success) {
       fecharModal();
@@ -341,15 +337,6 @@ function Dashboard() {
             }}
             erro={errorNome}
           />
-
-          <Input
-            id="descricaoProjeto"
-            rotulo="Descrição (opcional)"
-            tipo="text"
-            valor={descricao}
-            aoAlterar={(event) => setDescricao(event.target.value)}
-          />
-
           <div className="dashboard__formulario-acoes">
             <Button
               texto={editarProjeto ? "Salvar Alterações" : "Criar Projeto"}
