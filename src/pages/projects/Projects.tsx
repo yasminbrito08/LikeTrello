@@ -1,224 +1,269 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import "./Projects.css";
 
-import type { Project } from "../../types/project";
 import { useProjects } from "../../hooks/useProjects";
-
 import Input from "../../components/ui/input/Input";
 import Button from "../../components/ui/button/Button";
+import Icon from "../../components/ui/icon/icon";
+import chevronLIcon from "../../Icons/chevronL";
+
+type AbaProjeto = "visao-geral" | "membros" | "quadros" | "configuracoes";
 
 function Projects() {
-  const [mostrarArquivados, setMostrarArquivados] = useState(false);
-
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [editarProjeto, setEditarProjeto] = useState<Project | null>(null);
-
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-
-  const [errorNome, setErrorNome] = useState("");
+  const navigate = useNavigate();
+  const { projectId } = useParams<{ projectId: string }>();
 
   const {
     projects: projetos,
     loading,
     error,
-    success: mensagem,
-    handleCreateProject: criarProjeto,
     handleUpdateProject: atualizarProjeto,
     handleArchiveProject: arquivarProjeto,
     handleRestoreProject: restaurarProjeto,
   } = useProjects();
 
-  // Filtra os projetos ativos ou arquivados.
-  const projetosFiltrados = projetos.filter(
-    (projeto) => projeto.archived === mostrarArquivados,
-  );
+  const [abaAtiva, setAbaAtiva] = useState<AbaProjeto>("visao-geral");
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [errorNome, setErrorNome] = useState("");
 
-  // Valida os dados do formulário e cria ou atualiza um projeto.
-  async function handleSubmitProject(event: React.FormEvent<HTMLFormElement>) {
+  const projeto = projetos.find((item) => item.id === projectId);
+
+  useEffect(() => {
+    if (!projeto) return;
+    setNome(projeto.name);
+    setDescricao(projeto.description ?? "");
+    setErrorNome("");
+  }, [projeto]);
+
+  // Valida e salva as alterações do projeto.
+  async function handleSalvarAlteracoes(
+    event: React.FormEvent<HTMLFormElement>,
+  ) {
     event.preventDefault();
+
+    if (!projeto) return;
 
     if (!nome.trim()) {
       setErrorNome("O nome do projeto é obrigatório.");
       return;
     }
 
-    const success = editarProjeto
-      ? await atualizarProjeto(editarProjeto.id, nome.trim(), descricao.trim())
-      : await criarProjeto(nome.trim(), descricao.trim());
+    const success = await atualizarProjeto(
+      projeto.id,
+      nome.trim(),
+      descricao.trim(),
+    );
 
     if (success) {
-      setNome("");
-      setDescricao("");
       setErrorNome("");
-      setEditarProjeto(null);
-      setMostrarFormulario(false);
-      setMostrarArquivados(false);
     }
   }
 
-  // Preenche o formulário com os dados do projeto que será editado.
-  function handleUpdateProject(project: Project): void {
-    setEditarProjeto(project);
-    setNome(project.name);
-    setDescricao(project.description ?? "");
-    setErrorNome("");
-    setMostrarFormulario(true);
+  // Arquiva o projeto e volta para o dashboard.
+  async function handleArquivarProjeto() {
+    if (!projeto) return;
+    await arquivarProjeto(projeto.id);
+    navigate("/dashboard");
+  }
+
+  // Restaura o projeto arquivado.
+  async function handleRestaurarProjeto() {
+    if (!projeto) return;
+    await restaurarProjeto(projeto.id);
+  }
+
+  if (!projectId) {
+    return (
+      <div className="projetos">
+        <p className="projetos__vazio">
+          Selecione um projeto no dashboard para ver os detalhes.
+        </p>
+      </div>
+    );
+  }
+
+  if (loading && !projeto) {
+    return (
+      <div className="projetos">
+        <p className="projetos__carregando" role="status">
+          Carregando projeto...
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="projetos">
+        <p className="projetos__erro" role="alert">
+          {error}
+        </p>
+      </div>
+    );
+  }
+
+  if (!projeto) {
+    return (
+      <div className="projetos">
+        <p className="projetos__vazio">Projeto não encontrado.</p>
+        <button
+          type="button"
+          className="projetos__voltar"
+          onClick={() => navigate("/dashboard")}
+        >
+          <Icon path={chevronLIcon} size={18} />
+          Voltar ao dashboard
+        </button>
+      </div>
+    );
   }
 
   return (
     <div className="projetos">
-      <div className="projetos__cabecalho">
-        <div>
-          <h1 className="font-bold">Meus Projetos</h1>
-          <p>Visualize e gerencie seus projetos.</p>
+      <div className="projetos__detalhe">
+        <header className="projetos__detalhe-cabecalho">
+          <button
+            type="button"
+            className="projetos__voltar"
+            onClick={() => navigate("/dashboard")}
+            aria-label="Voltar ao dashboard"
+          >
+            <Icon path={chevronLIcon} size={20} />
+          </button>
+          <h1 className="projetos__detalhe-titulo">{projeto.name}</h1>
+        </header>
+
+        <nav className="projetos__abas" aria-label="Seções do projeto">
+          <button
+            type="button"
+            className={
+              abaAtiva === "visao-geral"
+                ? "projetos__aba projetos__aba--ativa"
+                : "projetos__aba"
+            }
+            onClick={() => setAbaAtiva("visao-geral")}
+          >
+            Visão geral
+          </button>
+
+          <button
+            type="button"
+            className={
+              abaAtiva === "membros"
+                ? "projetos__aba projetos__aba--ativa"
+                : "projetos__aba"
+            }
+            onClick={() => setAbaAtiva("membros")}
+          >
+            Membros
+          </button>
+
+          <button
+            type="button"
+            className={
+              abaAtiva === "quadros"
+                ? "projetos__aba projetos__aba--ativa"
+                : "projetos__aba"
+            }
+            onClick={() => setAbaAtiva("quadros")}
+          >
+            Quadros
+          </button>
+
+          <button
+            type="button"
+            className={
+              abaAtiva === "configuracoes"
+                ? "projetos__aba projetos__aba--ativa"
+                : "projetos__aba"
+            }
+            onClick={() => setAbaAtiva("configuracoes")}
+          >
+            Configurações
+          </button>
+        </nav>
+
+        <div className="projetos__conteudo">
+          {abaAtiva === "visao-geral" && null}
+          {abaAtiva === "membros" && null}
+          {abaAtiva === "quadros" && null}
+
+          {abaAtiva === "configuracoes" && (
+            <div className="projetos__configuracoes">
+              <section className="projetos__config-info">
+                <h2>Informações do projeto</h2>
+
+                <form onSubmit={handleSalvarAlteracoes} noValidate>
+                  <Input
+                    id="nomeProjeto"
+                    rotulo="Nome do projeto"
+                    tipo="text"
+                    valor={nome}
+                    aoAlterar={(event) => {
+                      setNome(event.target.value);
+                      setErrorNome("");
+                    }}
+                    erro={errorNome}
+                  />
+
+                  <div className="projetos__campo-descricao">
+                    <label htmlFor="descricaoProjeto">Descrição</label>
+                    <textarea
+                      id="descricaoProjeto"
+                      value={descricao}
+                      onChange={(event) => setDescricao(event.target.value)}
+                      rows={4}
+                      placeholder="Descreva o projeto..."
+                    />
+                  </div>
+
+                  <Button
+                    texto="Salvar alterações"
+                    tipo="submit"
+                    desabilitado={loading}
+                  />
+                </form>
+              </section>
+
+              <section className="projetos__config-acoes">
+                <h2>Ações do projeto</h2>
+
+                {projeto.archived ? (
+                  <>
+                    <button
+                      type="button"
+                      className="projetos__botao-restaurar-acao"
+                      onClick={handleRestaurarProjeto}
+                      disabled={loading}
+                    >
+                      Restaurar projeto
+                    </button>
+                    <p className="projetos__acao-ajuda">
+                      O projeto voltará para a lista de projetos ativos.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      className="projetos__botao-arquivar-acao"
+                      onClick={handleArquivarProjeto}
+                      disabled={loading}
+                    >
+                      Arquivar projeto
+                    </button>
+                    <p className="projetos__acao-ajuda">
+                      O projeto será movido para a lista de projetos
+                      arquivados.
+                    </p>
+                  </>
+                )}
+              </section>
+            </div>
+          )}
         </div>
-
-        <Button
-          texto="Novo Projeto"
-          tipo="button"
-          aoClicar={() => {
-            setEditarProjeto(null);
-            setNome("");
-            setDescricao("");
-            setErrorNome("");
-            setMostrarFormulario(true);
-          }}
-        />
-      </div>
-
-      {mostrarFormulario && (
-        <form
-          className="projetos__formulario"
-          onSubmit={handleSubmitProject}
-          noValidate
-        >
-          <h2>{editarProjeto ? "Editar Projeto" : "Novo Projeto"}</h2>
-
-          <Input
-            id="nomeProjeto"
-            rotulo="Nome do projeto"
-            tipo="text"
-            valor={nome}
-            aoAlterar={(event) => {
-              setNome(event.target.value);
-              setErrorNome("");
-            }}
-            erro={errorNome}
-          />
-
-          <Input
-            id="descricaoProjeto"
-            rotulo="Descrição (opcional)"
-            tipo="text"
-            valor={descricao}
-            aoAlterar={(event) => setDescricao(event.target.value)}
-          />
-
-          <div className="projetos__formulario-acoes">
-            <Button
-              texto={editarProjeto ? "Salvar Alterações" : "Criar Projeto"}
-              tipo="submit"
-              desabilitado={loading}
-            />
-
-            <Button
-              texto="Cancelar"
-              tipo="button"
-              aoClicar={() => {
-                setMostrarFormulario(false);
-                setEditarProjeto(null);
-                setNome("");
-                setDescricao("");
-                setErrorNome("");
-              }}
-            />
-          </div>
-        </form>
-      )}
-
-      {mensagem && (
-        <p className="projetos__mensagem" role="status">
-          {mensagem}
-        </p>
-      )}
-
-      {error && (
-        <p className="projetos__erro" role="alert">
-          {error}
-        </p>
-      )}
-
-      {loading && (
-        <p className="projetos__carregando" role="status">
-          Carregando projetos...
-        </p>
-      )}
-
-      <div className="projetos__filtros">
-        <button
-          type="button"
-          className={!mostrarArquivados ? "filtro-ativo" : ""}
-          onClick={() => setMostrarArquivados(false)}
-        >
-          Ativos
-        </button>
-
-        <button
-          type="button"
-          className={mostrarArquivados ? "filtro-ativo" : ""}
-          onClick={() => setMostrarArquivados(true)}
-        >
-          Arquivados
-        </button>
-      </div>
-
-      {!loading && !error && projetosFiltrados.length === 0 && (
-        <p className="projetos__vazio">
-          {mostrarArquivados
-            ? "Nenhum projeto arquivado."
-            : "Nenhum projeto ativo."}
-        </p>
-      )}
-
-      <div className="projetos__lista">
-        {projetosFiltrados.map((projeto) => (
-          <div className="projetos__card" key={projeto.id}>
-            <h2>{projeto.name}</h2>
-            <p>{projeto.description ?? "Sem descrição."}</p>
-
-            {!projeto.archived && (
-              <button
-                type="button"
-                className="projetos__botao-editar"
-                onClick={() => handleUpdateProject(projeto)}
-                disabled={loading}
-              >
-                Editar
-              </button>
-            )}
-
-            {projeto.archived ? (
-              <button
-                type="button"
-                className="projetos__botao-restaurar"
-                onClick={() => restaurarProjeto(projeto.id)}
-                disabled={loading}
-              >
-                Restaurar
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="projetos__botao-arquivar"
-                onClick={() => arquivarProjeto(projeto.id)}
-                disabled={loading}
-              >
-                Arquivar
-              </button>
-            )}
-          </div>
-        ))}
       </div>
     </div>
   );

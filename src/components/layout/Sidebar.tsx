@@ -3,6 +3,9 @@ import logo from "../../assets/logo.png";
 import { NavLink } from "react-router";
 import Icon from "../ui/icon/icon";
 import logoutIcon from "../../Icons/logout";
+import houseIcon from "../../Icons/house";
+import folderIcon from "../../Icons/folder";
+import userIcon from "../../Icons/user";
 
 function Sidebar() {
   return (
@@ -21,14 +24,17 @@ function Sidebar() {
         aria-label="Menu principal"
       >
         <NavLink to="/dashboard" className="menu-lateral__link">
+          <Icon path={houseIcon} size={16} />
           Dashboard
         </NavLink>
 
         <NavLink to="/projects" className="menu-lateral__link">
+          <Icon path={folderIcon} size={16}/>
           Projetos
         </NavLink>
 
         <NavLink to="/profile" className="menu-lateral__link">
+          <Icon path={userIcon} size={16}/>
           Perfil
         </NavLink>
       </nav>

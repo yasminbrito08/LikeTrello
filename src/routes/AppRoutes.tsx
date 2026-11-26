@@ -21,6 +21,7 @@ function AppRoutes() {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/projects/:projectId" element={<Projects />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>

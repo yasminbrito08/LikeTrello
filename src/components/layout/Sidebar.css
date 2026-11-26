@@ -37,6 +37,7 @@
 
 .menu-lateral__link {
   display: flex;
+  gap: 8px;
   align-items: center;
   min-height: 42px;
   padding: 10px 14px;
